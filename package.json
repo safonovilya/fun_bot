@@ -1,0 +1,29 @@
+{
+  "name": "fun_bot",
+  "version": "1.0.0",
+  "description": "number of fun ideas for bots",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0-beta.53",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.23",
+    "mongoose": "^5.0.16",
+    "pluralize-ru": "^1.0.1",
+    "telebot": "^1.2.6"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/safonovilya/fun_bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/safonovilya/fun_bot/issues"
+  },
+  "homepage": "https://github.com/safonovilya/fun_bot#readme"
+}
