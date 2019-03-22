@@ -26,7 +26,7 @@ module.exports = {
                     bot.sendMessage(chatId, phrase[Math.floor(Math.random() * phrase.length)]);
                 } else if (/(bot)|(бот)/i.test(msgText)) {
                     bot.sendMessage(chatId, 'чё опять?!', {replyToMessage: data.message.id});
-                } else if (/kolka/i.test(msgText)) {
+                } else if (/piy/i.test(msgText)) {
                     bot.sendMessage(chatId, `${bad[Math.floor(Math.random() * bad.length)]} молчи уже`)
                 }
             }
