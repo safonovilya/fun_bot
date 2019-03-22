@@ -14,10 +14,17 @@ module.exports = {
     plugin(bot) {
 
 
+        // TODO on picture or resource send in group
+        // add inline keyboards like/dislike
+        // like +100 karma dislike -100 karma
+
         bot.mod('message', (data) => {
             const {message} = data;
             const {chat, entities, from} = message;
 
+            if (message.edit_date) {
+                return data;
+            }
             if(/\/top/i.test(message.text)) {
 
                 const top = [];
@@ -42,7 +49,7 @@ module.exports = {
                 try {
                     const karma = parseKString(text.toLowerCase());
 
-                    if (chat.type === 'group') {
+                    if (chat.type === 'group' || chat.type === 'supergroup') {
                         stat[user] = (stat[user] || 0) + karma;
                         bot.sendMessage(chat.id, `${from.username} give ${karma} karma to ${user}(${stat[user]})`);
                     }
