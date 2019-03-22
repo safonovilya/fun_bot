@@ -1,3 +1,10 @@
+const stat = {};
+var multipliers = {k: 1000, m: 1000000};
+
+function parseKString(string) {
+    return parseFloat(string) * multipliers[string.charAt(string.length - 1).toLowerCase()];
+}
+
 // Export bot module
 module.exports = {
 
@@ -9,46 +16,48 @@ module.exports = {
 
         bot.mod('message', (data) => {
             const {message} = data;
-            const {chat} = message;
-            const fromId = message.from.id;
+            const {chat, entities, from} = message;
 
-            let top = [];
+            if(/\/top/i.test(message.text)) {
 
-            // топ  - статистика
-            // + %number%[k+] : 1k = 1000; 1kk = 1000000
-            if (chat) {
-                const chatId = chat.id;
-                const msgText = data.message.text;
-
-                if(/top/i.test(msgText)) {
-                    for (let k in stats) {
-                        top.push([k, stats[k]]);
-                    }
-        
-                    top.sort(function(a, b) {
-                        return b[1] - a[1];
-                    });
-
-                    let str = top.splice(0,10).map( x => { return x[0]+' '+x[1] }).join('\n');
-                    bot.sendMessage(chatId, str);
+                const top = [];
+                for (let k in stat) {
+                    top.push([k, stat[k]]);
                 }
 
-                if(/@\w+\s+d+/.test(msgText)) {
-                    let str = msgText.match(/@\w+\s+d+/)[0];
-                    let mult = Math.pow(1000, (str.match(/k/g)||[]).length);
-                    let add = +str.match(/\d+/g)[0]* mult;
-                    if(stat[fromId]) {
-                        stats[fromId].score += add;
-                    } else {
-                        stats[fromId].score = 0;
-                    }
-                }
-                // если в тексте ссылка на пользователя и паттерн %+число%
-                // добавить карму
+                top.sort(function(a, b) {
+                    return b[1] - a[1];
+                });
+
+                let str = top.splice(0,10).map( x => { return x[0]+' '+x[1] }).join('\n');
+                return bot.sendMessage(chat.id, str);
             }
-            return data;
 
+            const mention = entities.find(e => e.type === 'mention');
+            if (mention) {
+                let text = spliceSplit(message.text, mention.offset, mention.length);
+                // todo: support multiply mentioned
+                let user = message.text.slice(mention.offset, mention.length);
+
+                try {
+                    const karma = parseKString(text.toLowerCase());
+
+                    if (chat.type === 'group') {
+                        stat[user] = (stat[user] || 0) + karma;
+                        bot.sendMessage(chat.id, `${from.username} give ${karma} karma to ${user}(${stat[user]})`);
+                    }
+                    return data;
+                } catch (e) {
+                    console.log(e);
+                }
+            }
         });
 
     }
 };
+
+function spliceSplit(str, index, count, add) {
+    var ar = str.split('');
+    ar.splice(index, count, add);
+    return ar.join('');
+}

@@ -38,7 +38,7 @@ module.exports = {
                     if (text) bot.sendMessage(id, text);
                     user.flood = true;
                     const {chat} = message;
-                    if (chat && message.sticker) {
+                    if (chat.type === 'group' && message.sticker) {
                         bot.deleteMessage(chat.id, data.message.message_id);
                         bot.sendMessage(chat.id, 'flood sticker protection, 1 в 5 минут');
                     }
