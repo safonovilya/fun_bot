@@ -29,9 +29,8 @@ module.exports = {
                         return b[1] - a[1];
                     });
 
-                    for(let i = 0; i < 10; i++) {
-                        bot.sendMessage(chatId, `${i + 1}. ${top[i]}`);
-                    }
+                    let str = top.splice(0,10).map( x => { return x[0]+' '+x[1] }).join('\n');
+                    bot.sendMessage(chatId, str);
                 }
 
                 if(/@\w+\s+d+/.test(msgText)) {
