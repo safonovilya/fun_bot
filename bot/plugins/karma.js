@@ -18,6 +18,20 @@ module.exports = {
         // add inline keyboards like/dislike
         // like +100 karma dislike -100 karma
 
+        bot.on(['photo', 'video'], msg => {
+            const {chat} = msg;
+
+            let replyMarkup = bot.inlineKeyboard([
+                [
+                    bot.inlineButton('like', {callback: `${msg.message_id}_${msg.from.username}_like`}),
+                    bot.inlineButton('unlike', {callback: `${msg.message_id}_${msg.from.username}_unlike`}),
+                ]
+            ]);
+
+            const replyToMessage = msg.message_id;
+            bot.sendMessage(chat.id, 'vote', {replyMarkup});
+        });
+
         bot.mod('message', (data) => {
             const {message} = data;
             const {chat, entities, from} = message;
@@ -25,23 +39,26 @@ module.exports = {
             if (message.edit_date) {
                 return data;
             }
-            if(/\/top/i.test(message.text)) {
+            if (/\/top/i.test(message.text)) {
 
                 const top = [];
                 for (let k in stat) {
                     top.push([k, stat[k]]);
                 }
 
-                top.sort(function(a, b) {
+                top.sort(function (a, b) {
                     return b[1] - a[1];
                 });
 
-                let str = top.splice(0,10).map( x => { return x[0]+' '+x[1] }).join('\n');
+                let str = top.splice(0, 10).map(x => {
+                    return x[0] + ' ' + x[1]
+                }).join('\n');
                 return bot.sendMessage(chat.id, str);
             }
 
-            const mention = entities.find(e => e.type === 'mention');
-            if (mention) {
+
+            if (entities) {
+                const mention = entities.find(e => e.type === 'mention');
                 let text = spliceSplit(message.text, mention.offset, mention.length);
                 // todo: support multiply mentioned
                 let user = message.text.slice(mention.offset, mention.length);
@@ -58,6 +75,7 @@ module.exports = {
                     console.log(e);
                 }
             }
+            return data;
         });
 
     }
