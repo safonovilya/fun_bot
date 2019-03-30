@@ -11,3 +11,8 @@ bot.on(['/start', '/back'], msg => {
     return bot.sendMessage(msg.from.id, 'поехали?', {replyMarkup});
 
 });
+
+bot.on('/hide', msg => {
+    return bot.sendMessage(msg.chat.id, 'Hide keyboard.', {replyMarkup: 'hide'});
+});
+
