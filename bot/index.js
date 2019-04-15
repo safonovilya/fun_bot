@@ -1,4 +1,3 @@
-require('dotenv').config();
 const TOKEN = process.env.TELEGRAM_TOKEN;
 console.log(TOKEN);
 const TeleBot = require('telebot');
