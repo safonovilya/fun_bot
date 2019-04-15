@@ -1,3 +1,4 @@
+require('dotenv').config();
 const TOKEN = process.env.TELEGRAM_TOKEN;
 console.log(TOKEN);
 const TeleBot = require('telebot');
@@ -12,7 +13,7 @@ const bot = new TeleBot({
          maxConnections: 40 // Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
      },*/
     allowedUpdates: [], // Optional. List the types of updates you want your bot to receive. Specify an empty list to receive all updates.
-    usePlugins: ['karma', 'bigben', 'angrybot'], // Optional. Use user plugins from pluginFolder.
+    usePlugins: ['storage', 'bigben', 'angrybot'], // Optional. Use user plugins from pluginFolder.
     pluginFolder: `${__dirname}/plugins/`, // Optional. Plugin folder location.
     pluginConfig: { // Optional. Plugin configuration.
         // myPluginName: {

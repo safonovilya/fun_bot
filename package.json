@@ -9,9 +9,10 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0-beta.53",
+    "dotenv": "^7.0.0",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.23",
-    "mongoose": "^5.0.16",
+    "mongoose": "^5.4.19",
     "pluralize-ru": "^1.0.1",
     "telebot": "^1.2.6"
   },
